@@ -100,7 +100,7 @@ def transcribe_with_fallback(audio_path):
     """Try multiple speech recognition services with fallbacks"""
     transcription = ""
     
-    # Try Google Speech Recognition first
+    #Google Speech Recognition
     try:
         print("Trying Google Speech Recognition...")
         with sr.AudioFile(audio_path) as source:
@@ -112,7 +112,7 @@ def transcribe_with_fallback(audio_path):
     except Exception as e:
         print(f"Google Speech Recognition failed: {e}")
     
-    # Try Google Cloud Speech (if credentials available)
+    #Then, Google Cloud Speech
     try:
         print("Trying Google Cloud Speech...")
         with sr.AudioFile(audio_path) as source:
@@ -124,30 +124,6 @@ def transcribe_with_fallback(audio_path):
     except Exception as e:
         print(f"Google Cloud Speech failed: {e}")
     
-    # Try Wit.ai (if API key available)
-    try:
-        print("Trying Wit.ai...")
-        with sr.AudioFile(audio_path) as source:
-            audio_data = recognizer.record(source)
-            # You would need to set WIT_AI_KEY for this
-            text = recognizer.recognize_wit(audio_data, key=os.getenv('WIT_AI_KEY'))
-            print("✓ Wit.ai successful")
-            return text
-    except Exception as e:
-        print(f"Wit.ai failed: {e}")
-    
-    # Try Bing Speech Recognition (if API key available)
-    try:
-        print("Trying Microsoft Bing Speech Recognition...")
-        with sr.AudioFile(audio_path) as source:
-            audio_data = recognizer.record(source)
-            text = recognizer.recognize_bing(audio_data, key=os.getenv('BING_KEY'))
-            print("✓ Bing Speech Recognition successful")
-            return text
-    except Exception as e:
-        print(f"Bing Speech Recognition failed: {e}")
-    
-    return ""
 
 def transcribe_audio_file(audio_path):
     """Transcribe audio file with chunking and multiple fallbacks"""
